@@ -1,0 +1,37 @@
+{
+  "name": "tegro-ton-mcp",
+  "version": "0.1.0",
+  "description": "Read-only MCP server + OpenAPI for The Open Network (TON) and its native token GRAM (formerly Toncoin): balances, tokens, transactions, prices, NFTs, DNS. Works with Claude, Cursor, Claude Code, ChatGPT and Hermes Agent. No keys, no signing.",
+  "type": "module",
+  "bin": { "tegro-ton-mcp": "dist/cli.js" },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "start:http": "node dist/cli.js http",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "ton", "gram", "toncoin", "the-open-network", "mcp", "model-context-protocol",
+    "crypto", "wallet", "blockchain", "claude", "claude-code", "chatgpt", "cursor",
+    "hermes", "tonapi", "web3", "defi", "openapi", "ai-tools"
+  ],
+  "author": "Tegro",
+  "license": "MIT",
+  "homepage": "https://wallet.tegro.finance",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.4.0",
+    "zod": "^3.23.8",
+    "zod-to-json-schema": "^3.23.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsup": "^8.1.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "tegro-ton": {
+      "command": "npx",
+      "args": ["-y", "tegro-ton-mcp"],
+      "env": { "TONAPI_KEY": "" }
+    }
+  }
+}

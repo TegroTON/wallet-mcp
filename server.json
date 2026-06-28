@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.tegroton/tegro-mcp",
+  "description": "Read-only MCP server for The Open Network (TON) and its native token GRAM (formerly Toncoin): balances, tokens, transactions, prices, NFTs, DNS. No keys, no signing.",
+  "version": "0.1.0",
+  "repository": { "url": "https://github.com/TegroTON/tegro-mcp", "source": "github" },
+  "packages": [
+    {
+      "registry_type": "npm",
+      "identifier": "@tegroton/tegro-mcp",
+      "version": "0.1.0",
+      "transport": { "type": "stdio" },
+      "environment_variables": [
+        { "name": "TONAPI_KEY", "description": "Optional TonAPI key to raise the rate limit", "is_required": false, "is_secret": true }
+      ]
+    }
+  ]
+}

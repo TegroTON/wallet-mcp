@@ -1,5 +1,10 @@
 # Tegro TON / GRAM MCP
 
+[![npm](https://img.shields.io/npm/v/@tegroton/tegro-mcp?color=cb3837&logo=npm)](https://www.npmjs.com/package/@tegroton/tegro-mcp)
+[![CI](https://github.com/TegroTON/tegro-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/TegroTON/tegro-mcp/actions/workflows/ci.yml)
+[![MCP server](https://img.shields.io/badge/MCP-server-2563eb)](https://modelcontextprotocol.io)
+[![License: MIT](https://img.shields.io/badge/license-MIT-3ad29f)](LICENSE)
+
 **Read-only [Model Context Protocol](https://modelcontextprotocol.io) server for [The Open Network (TON)](https://ton.org) and its native token GRAM** (formerly Toncoin). Give any AI assistant live, safe access to TON on-chain data — wallet balances, tokens, transactions, prices, NFTs and TON DNS — with **no private keys and no signing**. Public reads only.
 
 Works out of the box with **Claude Desktop, Claude Code, Cursor, Hermes Agent** (MCP) and **ChatGPT** (GPT Actions via OpenAPI).
@@ -17,6 +22,27 @@ Works out of the box with **Claude Desktop, Claude Code, Cursor, Hermes Agent** 
 | `ton_get_jetton_info` | Jetton metadata by master address (symbol, supply, verification) |
 | `ton_get_nfts` | NFTs owned by an address |
 | `ton_resolve_dns` | TON DNS name → wallet address |
+| `ton_validate_address` | Validate + normalize an address offline (CRC16, bounceable/testnet flags) |
+
+Every tool maps 1:1 to an MCP tool and an HTTP `POST /tools/<name>` operation in the OpenAPI spec — the two surfaces are generated from one definition.
+
+### Example output
+
+```jsonc
+// ton_get_rate { "token": "ton", "currency": "usd" }
+{ "token": "GRAM", "currency": "USD", "price": 1.58, "diff24h": "+1.39%" }
+
+// ton_get_account { "address": "UQ…" }
+{ "address": "0:…", "balanceGram": "12.8400", "balanceNano": "12840000000",
+  "status": "active", "isWallet": true, "network": "TON" }
+
+// ton_validate_address { "address": "EQ…" }   ← offline, no network
+{ "valid": true, "format": "friendly", "raw": "0:…", "workchain": 0,
+  "bounceable": true, "testnet": false }
+```
+
+Ask an AI assistant: *"What's the GRAM price, and how much is in foundation.ton?"* — it resolves the
+DNS name, reads the balance, and answers with live data.
 
 ## Quick start
 
@@ -86,10 +112,20 @@ const acc = await getAccount("UQ…");   // { balanceGram, status, network: "TON
 const rate = await getRate("ton", "usd"); // { token: "GRAM", price, diff24h }
 ```
 
-## About
+## Contributing & support
 
-Built and maintained by **[Tegro](https://wallet.tegro.finance)** — a non-custodial TON/GRAM wallet with a crypto card. Part of the Tegro open ecosystem.
+- [Contributing guide](CONTRIBUTING.md) — setup, tests, adding a tool
+- [Security policy](SECURITY.md) — report privately to `security@tegro.finance`
+- [Changelog](CHANGELOG.md) · [Code of conduct](CODE_OF_CONDUCT.md)
+- Issues and feature requests: [GitHub issues](https://github.com/TegroTON/tegro-mcp/issues)
+
+## Ecosystem
+
+Part of the **[Tegro](https://wallet.tegro.finance)** open ecosystem — a non-custodial TON/GRAM wallet with a crypto card. Sister packages:
+
+- [`@tegroton/tegro-finance`](https://www.npmjs.com/package/@tegroton/tegro-finance) — Tegro Finance DEX SDK
+- [`@tegroton/tegro-money`](https://www.npmjs.com/package/@tegroton/tegro-money) — Tegro.Money payments SDK
 
 ## License
 
-MIT
+[MIT](LICENSE) © TegroTON

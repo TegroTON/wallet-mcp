@@ -1,8 +1,13 @@
 import { z } from "zod";
 
+import { isValidAddress, parseAddress } from "./address.js";
 import * as ton from "./tonapi.js";
 
-const addr = z.string().min(48).describe("TON wallet address (raw 0:… or friendly EQ…/UQ…)");
+const addr = z
+  .string()
+  .min(48)
+  .refine(isValidAddress, "not a valid TON address (raw 0:… or friendly EQ…/UQ…)")
+  .describe("TON wallet address — raw (0:…) or friendly (EQ…/UQ…)");
 
 export type Tool = {
   name: string;
@@ -67,6 +72,13 @@ export const tools: Tool[] = [
     description: "Resolve a TON DNS name (e.g. foundation.ton) to its wallet address.",
     schema: z.object({ name: z.string().describe("TON DNS name, with or without the .ton suffix") }),
     handler: (a) => ton.resolveDns(a.name as string),
+  },
+  {
+    name: "ton_validate_address",
+    description:
+      "Validate and normalize a TON address (raw or friendly) offline — returns format, normalized raw form, and bounceable/testnet flags with a real CRC check. No network call.",
+    schema: z.object({ address: z.string().describe("a TON address in raw (0:…) or friendly (EQ…/UQ…) form") }),
+    handler: (a) => Promise.resolve(parseAddress(a.address as string)),
   },
 ];
 

@@ -1,0 +1,16 @@
+# Smithery one-click install — https://smithery.ai
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      tonapiKey:
+        type: string
+        title: TonAPI key (optional)
+        description: Raises the public TonAPI rate limit. Leave blank to use the public tier.
+  commandFunction: |
+    (config) => ({
+      command: 'npx',
+      args: ['-y', '@tegroton/tegro-mcp'],
+      env: config.tonapiKey ? { TONAPI_KEY: config.tonapiKey } : {}
+    })

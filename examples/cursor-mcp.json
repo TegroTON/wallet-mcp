@@ -1,5 +1,5 @@
 {
   "mcpServers": {
-    "tegro-ton": { "command": "npx", "args": ["-y", "tegro-ton-mcp"] }
+    "tegro-mcp": { "command": "npx", "args": ["-y", "@tegroton/tegro-mcp"] }
   }
 }

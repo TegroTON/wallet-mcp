@@ -2,8 +2,8 @@
 import { runHttp } from "./http.js";
 import { runMcp } from "./mcp.js";
 
-// `tegro-ton-mcp`        → MCP server over stdio (Claude, Cursor, Claude Code, Hermes…)
-// `tegro-ton-mcp http [port]` → HTTP/OpenAPI surface (ChatGPT Actions, universal)
+// `tegro-mcp`        → MCP server over stdio (Claude, Cursor, Claude Code, Hermes…)
+// `tegro-mcp http [port]` → HTTP/OpenAPI surface (ChatGPT Actions, universal)
 const mode = process.argv[2];
 
 if (mode === "http") {

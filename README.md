@@ -21,8 +21,8 @@ Works out of the box with **Claude Desktop, Claude Code, Cursor, Hermes Agent** 
 ## Quick start
 
 ```bash
-npx tegro-ton-mcp           # MCP server over stdio
-npx tegro-ton-mcp http 8787 # HTTP + OpenAPI on :8787 (for ChatGPT / universal)
+npx @tegroton/tegro-mcp           # MCP server over stdio
+npx @tegroton/tegro-mcp http 8787 # HTTP + OpenAPI on :8787 (for ChatGPT / universal)
 ```
 
 No configuration is required. To lift the public rate limit, set a [TonAPI](https://tonconsole.com) key: `TONAPI_KEY=...`.
@@ -36,20 +36,20 @@ Add to your MCP config (`claude_desktop_config.json`, Cursor `~/.cursor/mcp.json
 ```json
 {
   "mcpServers": {
-    "tegro-ton": {
+    "tegro-mcp": {
       "command": "npx",
-      "args": ["-y", "tegro-ton-mcp"],
+      "args": ["-y", "@tegroton/tegro-mcp"],
       "env": { "TONAPI_KEY": "" }
     }
   }
 }
 ```
 
-Claude Code one-liner: `claude mcp add tegro-ton -- npx -y tegro-ton-mcp`
+Claude Code one-liner: `claude mcp add tegro-mcp -- npx -y @tegroton/tegro-mcp`
 
 ### Hermes Agent (MCP)
 
-Hermes Agent connects any MCP server. Add `tegro-ton-mcp` as an MCP server in its MCP config / registry with the same `command`/`args` as above, then enable it via `hermes tools`.
+Hermes Agent connects any MCP server. Add `@tegroton/tegro-mcp` as an MCP server in its MCP config / registry with the same `command`/`args` as above, then enable it via `hermes tools`.
 
 ### ChatGPT (GPT Actions)
 
@@ -62,7 +62,7 @@ Run the HTTP surface (self-host — see below) and point a custom GPT's **Action
 npm i && npm run build && node dist/cli.js http 8787
 
 # docker
-docker build -t tegro-ton-mcp . && docker run -p 8787:8787 -e TONAPI_KEY=... tegro-ton-mcp
+docker build -t tegro-mcp . && docker run -p 8787:8787 -e TONAPI_KEY=... tegro-mcp
 ```
 
 Endpoints: `GET /` (info), `GET /health`, `GET /openapi.json`, `POST /tools/<name>` (JSON body).
@@ -81,7 +81,7 @@ curl -s localhost:8787/tools/ton_get_rate -d '{"token":"ton","currency":"usd"}'
 ## Programmatic use
 
 ```ts
-import { getAccount, getRate } from "tegro-ton-mcp";
+import { getAccount, getRate } from "@tegroton/tegro-mcp";
 const acc = await getAccount("UQ…");   // { balanceGram, status, network: "TON", … }
 const rate = await getRate("ton", "usd"); // { token: "GRAM", price, diff24h }
 ```

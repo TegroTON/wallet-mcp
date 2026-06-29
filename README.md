@@ -1,13 +1,19 @@
-# Tegro TON / GRAM MCP
+# Tegro Wallet MCP — TON / GRAM
 
-[![npm](https://img.shields.io/npm/v/@tegroton/tegro-mcp?color=cb3837&logo=npm)](https://www.npmjs.com/package/@tegroton/tegro-mcp)
-[![CI](https://github.com/TegroTON/tegro-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/TegroTON/tegro-mcp/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@tegroton/wallet-mcp?color=cb3837&logo=npm)](https://www.npmjs.com/package/@tegroton/wallet-mcp)
+[![npm downloads](https://img.shields.io/npm/dm/@tegroton/wallet-mcp?color=cb3837)](https://www.npmjs.com/package/@tegroton/wallet-mcp)
+[![CI](https://github.com/TegroTON/wallet-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/TegroTON/wallet-mcp/actions/workflows/ci.yml)
 [![MCP server](https://img.shields.io/badge/MCP-server-2563eb)](https://modelcontextprotocol.io)
+[![Built on TON](https://img.shields.io/badge/Built%20on-TON-0098EA?logo=ton&logoColor=white)](https://ton.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ad29f)](LICENSE)
 
-**Read-only [Model Context Protocol](https://modelcontextprotocol.io) server for [The Open Network (TON)](https://ton.org) and its native token GRAM** (formerly Toncoin). Give any AI assistant live, safe access to TON on-chain data — wallet balances, tokens, transactions, prices, NFTs and TON DNS — with **no private keys and no signing**. Public reads only.
+> **The TON & GRAM wallet MCP.** Give any AI assistant read-only, real-time access to TON on-chain
+> data — wallet balances, tokens, transactions, prices, NFTs, TON DNS and address validation — with
+> **no private keys and no signing.** One server, every major AI client.
 
-Works out of the box with **Claude Desktop, Claude Code, Cursor, Hermes Agent** (MCP) and **ChatGPT** (GPT Actions via OpenAPI).
+**Read-only [Model Context Protocol](https://modelcontextprotocol.io) server for [TON](https://ton.org) wallets and the GRAM token** (formerly Toncoin). Works out of the box with **Claude Desktop, Claude Code, Cursor, Hermes Agent** (MCP) and **ChatGPT** (GPT Actions via OpenAPI).
+
+*Part of the [Tegro](https://wallet.tegro.finance) open ecosystem — see [`@tegroton/tegro-finance`](https://www.npmjs.com/package/@tegroton/tegro-finance) (DEX) and [`@tegroton/tegro-money`](https://www.npmjs.com/package/@tegroton/tegro-money) (payments).*
 
 > 🔁 The TON native token rebranded **Toncoin → Gram** (ticker **TON → GRAM**, 2026‑06‑15). Balances are 1:1, the network and addresses stay **TON**. This server surfaces amounts as **GRAM** and the network as **TON**.
 
@@ -47,8 +53,8 @@ DNS name, reads the balance, and answers with live data.
 ## Quick start
 
 ```bash
-npx @tegroton/tegro-mcp           # MCP server over stdio
-npx @tegroton/tegro-mcp http 8787 # HTTP + OpenAPI on :8787 (for ChatGPT / universal)
+npx @tegroton/wallet-mcp           # MCP server over stdio
+npx @tegroton/wallet-mcp http 8787 # HTTP + OpenAPI on :8787 (for ChatGPT / universal)
 ```
 
 No configuration is required. To lift the public rate limit, set a [TonAPI](https://tonconsole.com) key: `TONAPI_KEY=...`.
@@ -62,20 +68,20 @@ Add to your MCP config (`claude_desktop_config.json`, Cursor `~/.cursor/mcp.json
 ```json
 {
   "mcpServers": {
-    "tegro-mcp": {
+    "tegro-wallet-mcp": {
       "command": "npx",
-      "args": ["-y", "@tegroton/tegro-mcp"],
+      "args": ["-y", "@tegroton/wallet-mcp"],
       "env": { "TONAPI_KEY": "" }
     }
   }
 }
 ```
 
-Claude Code one-liner: `claude mcp add tegro-mcp -- npx -y @tegroton/tegro-mcp`
+Claude Code one-liner: `claude mcp add tegro-wallet-mcp -- npx -y @tegroton/wallet-mcp`
 
 ### Hermes Agent (MCP)
 
-Hermes Agent connects any MCP server. Add `@tegroton/tegro-mcp` as an MCP server in its MCP config / registry with the same `command`/`args` as above, then enable it via `hermes tools`.
+Hermes Agent connects any MCP server. Add `@tegroton/wallet-mcp` as an MCP server in its MCP config / registry with the same `command`/`args` as above, then enable it via `hermes tools`.
 
 ### ChatGPT (GPT Actions)
 
@@ -88,7 +94,7 @@ Run the HTTP surface (self-host — see below) and point a custom GPT's **Action
 npm i && npm run build && node dist/cli.js http 8787
 
 # docker
-docker build -t tegro-mcp . && docker run -p 8787:8787 -e TONAPI_KEY=... tegro-mcp
+docker build -t tegro-wallet-mcp . && docker run -p 8787:8787 -e TONAPI_KEY=... tegro-wallet-mcp
 ```
 
 Endpoints: `GET /` (info), `GET /health`, `GET /openapi.json`, `POST /tools/<name>` (JSON body).
@@ -107,7 +113,7 @@ curl -s localhost:8787/tools/ton_get_rate -d '{"token":"ton","currency":"usd"}'
 ## Programmatic use
 
 ```ts
-import { getAccount, getRate } from "@tegroton/tegro-mcp";
+import { getAccount, getRate } from "@tegroton/wallet-mcp";
 const acc = await getAccount("UQ…");   // { balanceGram, status, network: "TON", … }
 const rate = await getRate("ton", "usd"); // { token: "GRAM", price, diff24h }
 ```
@@ -117,7 +123,7 @@ const rate = await getRate("ton", "usd"); // { token: "GRAM", price, diff24h }
 - [Contributing guide](CONTRIBUTING.md) — setup, tests, adding a tool
 - [Security policy](SECURITY.md) — report privately to `security@tegro.finance`
 - [Changelog](CHANGELOG.md) · [Code of conduct](CODE_OF_CONDUCT.md)
-- Issues and feature requests: [GitHub issues](https://github.com/TegroTON/tegro-mcp/issues)
+- Issues and feature requests: [GitHub issues](https://github.com/TegroTON/wallet-mcp/issues)
 
 ## Ecosystem
 

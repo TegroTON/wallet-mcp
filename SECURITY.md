@@ -1,6 +1,6 @@
 # Security Policy
 
-`@tegroton/tegro-mcp` is **read-only**: it holds no private keys, never signs or broadcasts
+`@tegroton/wallet-mcp` is **read-only**: it holds no private keys, never signs or broadcasts
 transactions, and cannot move funds. It only reads public on-chain data via TonAPI.
 
 ## Reporting a vulnerability
@@ -8,7 +8,7 @@ transactions, and cannot move funds. It only reads public on-chain data via TonA
 Please report security issues **privately**, not via public issues:
 
 - Email: **security@tegro.finance**
-- Or open a [GitHub security advisory](https://github.com/TegroTON/tegro-mcp/security/advisories/new).
+- Or open a [GitHub security advisory](https://github.com/TegroTON/wallet-mcp/security/advisories/new).
 
 We aim to acknowledge within 72 hours. Please include reproduction steps and the affected version.
 

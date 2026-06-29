@@ -1,18 +1,18 @@
 ---
 name: ton-gram
-description: Query TON (The Open Network) and GRAM on-chain data — wallet balances, token holdings, transactions, GRAM/Toncoin price, NFTs, and TON DNS. Use whenever the user asks about a TON address, a .ton name, the GRAM/TON price, or a jetton. Backed by the read-only tegro-mcp MCP server.
+description: Query TON (The Open Network) and GRAM on-chain data — wallet balances, token holdings, transactions, GRAM/Toncoin price, NFTs, and TON DNS. Use whenever the user asks about a TON address, a .ton name, the GRAM/TON price, or a jetton. Backed by the read-only tegro-wallet-mcp MCP server.
 ---
 
 # TON / GRAM on-chain queries
 
-Answer questions about **The Open Network (TON)** and its native token **GRAM** (formerly Toncoin, ticker TON → GRAM since 2026‑06‑15) using the **`tegro-mcp`** MCP server. Read-only, no keys, cannot move funds.
+Answer questions about **The Open Network (TON)** and its native token **GRAM** (formerly Toncoin, ticker TON → GRAM since 2026‑06‑15) using the **`tegro-wallet-mcp`** MCP server. Read-only, no keys, cannot move funds.
 
 ## Prerequisite
 
-The `tegro-mcp` MCP server must be connected:
+The `tegro-wallet-mcp` MCP server must be connected:
 
 ```
-claude mcp add tegro-mcp -- npx -y @tegroton/tegro-mcp
+claude mcp add tegro-wallet-mcp -- npx -y @tegroton/wallet-mcp
 ```
 
 ## Tools

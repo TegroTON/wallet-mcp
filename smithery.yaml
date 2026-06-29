@@ -11,6 +11,6 @@ startCommand:
   commandFunction: |
     (config) => ({
       command: 'npx',
-      args: ['-y', '@tegroton/tegro-mcp'],
+      args: ['-y', '@tegroton/wallet-mcp'],
       env: config.tonapiKey ? { TONAPI_KEY: config.tonapiKey } : {}
     })

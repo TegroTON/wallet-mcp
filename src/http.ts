@@ -92,7 +92,7 @@ export function runHttp(port = Number(process.env.PORT ?? 8787), host = process.
         return json(200, await t.handler(parsed.data));
       } catch (e) {
         if (e instanceof TonApiError) return json(STATUS_FOR[e.code] ?? 502, { error: e.code });
-        console.error(`[tegro-mcp] tool ${t.name} failed:`, (e as Error)?.message);
+        console.error(`[tegro-wallet-mcp] tool ${t.name} failed:`, (e as Error)?.message);
         return json(502, { error: "internal_error" });
       }
     }

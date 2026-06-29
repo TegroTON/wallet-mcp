@@ -5,7 +5,7 @@ Thanks for helping improve the Tegro TON/GRAM MCP server.
 ## Setup
 
 ```bash
-git clone https://github.com/TegroTON/tegro-mcp && cd tegro-mcp
+git clone https://github.com/TegroTON/wallet-mcp && cd tegro-wallet-mcp
 npm install
 npm run dev          # MCP over stdio (tsx)
 npm run dev -- http  # HTTP/OpenAPI surface

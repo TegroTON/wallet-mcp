@@ -4,7 +4,9 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/), and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.1.0] - 2026-06-28
+## [0.1.0] - 2026-06-29
+
+> Renamed from `@tegroton/tegro-mcp` → `@tegroton/wallet-mcp` (more specific within the Tegro ecosystem alongside tegro-finance / tegro-money). Stronger description + ecosystem cross-linking.
 
 ### Security & hardening (pre-release)
 - HTTP surface binds `127.0.0.1` by default (localhost-only); pass an explicit host to expose.

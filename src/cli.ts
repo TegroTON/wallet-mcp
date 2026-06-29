@@ -2,8 +2,8 @@
 import { runHttp } from "./http.js";
 import { runMcp } from "./mcp.js";
 
-// `tegro-mcp`                  → MCP server over stdio (Claude, Cursor, Claude Code, Hermes…)
-// `tegro-mcp http [port] [host]` → HTTP/OpenAPI surface (ChatGPT Actions, universal)
+// `tegro-wallet-mcp`                  → MCP server over stdio (Claude, Cursor, Claude Code, Hermes…)
+// `tegro-wallet-mcp http [port] [host]` → HTTP/OpenAPI surface (ChatGPT Actions, universal)
 //   default host 127.0.0.1 (localhost-only) — pass 0.0.0.0 to expose, behind your own auth/proxy.
 const mode = process.argv[2];
 

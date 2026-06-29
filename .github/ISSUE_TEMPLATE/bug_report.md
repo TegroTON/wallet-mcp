@@ -14,6 +14,6 @@ labels: bug
 **Expected**
 
 **Environment**
-- `@tegroton/tegro-mcp` version:
+- `@tegroton/wallet-mcp` version:
 - Client (Claude Desktop / Claude Code / Cursor / Hermes / ChatGPT):
 - Node version:

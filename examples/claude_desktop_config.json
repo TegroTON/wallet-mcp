@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "tegro-mcp": {
+    "tegro-wallet-mcp": {
       "command": "npx",
-      "args": ["-y", "@tegroton/tegro-mcp"],
+      "args": ["-y", "@tegroton/wallet-mcp"],
       "env": { "TONAPI_KEY": "" }
     }
   }

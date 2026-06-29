@@ -28,7 +28,7 @@ async function tapi<T>(path: string): Promise<T> {
   try {
     const res = await fetch(`${BASE}${path}`, { headers: headers(), signal: ctrl.signal });
     if (!res.ok) {
-      console.error(`[tegro-mcp] TonAPI ${res.status} ${path}`);
+      console.error(`[tegro-wallet-mcp] TonAPI ${res.status} ${path}`);
       const code = res.status === 429 ? "rate_limited" : res.status === 404 ? "not_found" : "upstream_error";
       throw new TonApiError(code, res.status);
     }
@@ -36,7 +36,7 @@ async function tapi<T>(path: string): Promise<T> {
   } catch (e) {
     if (e instanceof TonApiError) throw e;
     if (e instanceof Error && e.name === "AbortError") throw new TonApiError("timeout", null);
-    console.error(`[tegro-mcp] TonAPI request failed ${path}:`, (e as Error)?.message);
+    console.error(`[tegro-wallet-mcp] TonAPI request failed ${path}:`, (e as Error)?.message);
     throw new TonApiError("network_error", null);
   } finally {
     clearTimeout(timer);

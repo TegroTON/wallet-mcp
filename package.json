@@ -1,10 +1,10 @@
 {
-  "name": "@tegroton/tegro-mcp",
+  "name": "@tegroton/wallet-mcp",
   "version": "0.1.0",
-  "description": "Read-only MCP server + OpenAPI for The Open Network (TON) and its native token GRAM (formerly Toncoin): balances, tokens, transactions, prices, NFTs, DNS. Works with Claude, Cursor, Claude Code, ChatGPT and Hermes Agent. No keys, no signing.",
+  "description": "The TON & GRAM wallet MCP — give any AI assistant read-only on-chain data (balances, tokens, transactions, prices, NFTs, DNS, address validation). One server for Claude, Cursor, Claude Code, ChatGPT and Hermes Agent. No keys, no signing.",
   "type": "module",
   "bin": {
-    "tegro-mcp": "dist/cli.js"
+    "tegro-wallet-mcp": "dist/cli.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
   },
   "keywords": [
     "tegro",
-    "tegro-mcp",
+    "tegro-wallet-mcp",
     "tegroton",
     "ton",
     "gram",
@@ -57,9 +57,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TegroTON/tegro-mcp.git"
+    "url": "git+https://github.com/TegroTON/wallet-mcp.git"
   },
-  "homepage": "https://github.com/TegroTON/tegro-mcp#readme",
+  "homepage": "https://github.com/TegroTON/wallet-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.4.0",
     "zod": "^3.23.8",

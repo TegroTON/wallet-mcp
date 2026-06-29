@@ -5,9 +5,18 @@ import * as ton from "./tonapi.js";
 
 const addr = z
   .string()
+  .trim()
   .min(48)
+  .max(80)
   .refine(isValidAddress, "not a valid TON address (raw 0:… or friendly EQ…/UQ…)")
   .describe("TON wallet address — raw (0:…) or friendly (EQ…/UQ…)");
+
+const currency = z
+  .string()
+  .trim()
+  .regex(/^[a-z]{2,8}$/i, "fiat code must be 2–8 letters")
+  .default("usd")
+  .describe("fiat code: usd, eur, rub, …");
 
 export type Tool = {
   name: string;
@@ -28,10 +37,7 @@ export const tools: Tool[] = [
   {
     name: "ton_get_jettons",
     description: "List jetton (token) balances held by a TON address, with fiat value where the token is priced.",
-    schema: z.object({
-      address: addr,
-      currency: z.string().default("usd").describe("fiat code: usd, eur, rub, …"),
-    }),
+    schema: z.object({ address: addr, currency }),
     handler: (a) => ton.getJettons(a.address as string, (a.currency as string) ?? "usd"),
   },
   {
@@ -47,15 +53,23 @@ export const tools: Tool[] = [
     name: "ton_get_rate",
     description: "Current price of GRAM (the native TON token) or any jetton in a fiat currency, plus 24h change.",
     schema: z.object({
-      token: z.string().default("ton").describe("'ton' (= GRAM) or a jetton master address"),
-      currency: z.string().default("usd"),
+      token: z.string().trim().min(1).max(80).default("ton").describe("'ton' (= GRAM) or a jetton master address"),
+      currency,
     }),
     handler: (a) => ton.getRate((a.token as string) ?? "ton", (a.currency as string) ?? "usd"),
   },
   {
     name: "ton_get_jetton_info",
     description: "Metadata for a jetton (token) by its master contract address: symbol, name, supply, verification.",
-    schema: z.object({ master: z.string().describe("jetton master contract address") }),
+    schema: z.object({
+      master: z
+        .string()
+        .trim()
+        .min(48)
+        .max(80)
+        .refine(isValidAddress, "not a valid jetton master address")
+        .describe("jetton master contract address"),
+    }),
     handler: (a) => ton.getJettonInfo(a.master as string),
   },
   {
@@ -70,7 +84,15 @@ export const tools: Tool[] = [
   {
     name: "ton_resolve_dns",
     description: "Resolve a TON DNS name (e.g. foundation.ton) to its wallet address.",
-    schema: z.object({ name: z.string().describe("TON DNS name, with or without the .ton suffix") }),
+    schema: z.object({
+      name: z
+        .string()
+        .trim()
+        .min(1)
+        .max(64)
+        .regex(/^[a-z0-9._-]+$/i, "invalid DNS name")
+        .describe("TON DNS name, with or without the .ton suffix"),
+    }),
     handler: (a) => ton.resolveDns(a.name as string),
   },
   {

@@ -40,9 +40,9 @@ export type AddressInfo = {
 const RAW_RX = /^(-1|0):[0-9a-fA-F]{64}$/;
 const FRIENDLY_RX = /^[A-Za-z0-9_-]{48}$/;
 
-/** Parse + validate a TON address. Never throws. */
-export function parseAddress(input: string): AddressInfo {
-  const s = (input ?? "").trim();
+/** Parse + validate a TON address. Never throws (incl. non-string input). */
+export function parseAddress(input: unknown): AddressInfo {
+  const s = (typeof input === "string" ? input : "").trim();
   const base: AddressInfo = { valid: false, format: null, raw: null, workchain: null, bounceable: null, testnet: null };
 
   if (RAW_RX.test(s)) {
@@ -56,14 +56,17 @@ export function parseAddress(input: string): AddressInfo {
     const want = (bytes[34] << 8) | bytes[35];
     if (crc16(bytes.subarray(0, 34)) !== want) return { ...base, format: "friendly", reason: "CRC mismatch" };
     const tag = bytes[0];
-    const wc = bytes[1] === 0xff ? -1 : bytes[1];
+    // valid tags: 0x11 (bounceable) + 0x40 (non-bounceable) + 0x80 (testnet) → 0x11/0x51/0x91/0xD1
+    if ((tag & 0x3f) !== 0x11) return { ...base, format: "friendly", reason: "invalid address tag" };
+    if (bytes[1] !== 0x00 && bytes[1] !== 0xff) return { ...base, format: "friendly", reason: "unsupported workchain" };
+    const wc = bytes[1] === 0xff ? -1 : 0;
     return {
       ...base,
       valid: true,
       format: "friendly",
       raw: `${wc}:${toHex(bytes.subarray(2, 34))}`,
       workchain: wc,
-      bounceable: (tag & 0x40) === 0, // 0x11 bounceable, 0x51 non-bounceable (+0x80 testnet)
+      bounceable: (tag & 0x40) === 0,
       testnet: (tag & 0x80) !== 0,
     };
   }

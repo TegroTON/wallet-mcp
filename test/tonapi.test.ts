@@ -20,6 +20,8 @@ describe("toGram — exact string math", () => {
     expect(toGram("12840000000")).toBe("12.8400");
     expect(toGram("999999999999999999")).toBe("999999999.9999"); // would lose precision via Number
     expect(toGram("-1500000000")).toBe("-1.5000");
+    expect(toGram("1500000000", 0)).toBe("1"); // no trailing dot at dp=0
+    expect(toGram("1500000000", 9)).toBe("1.500000000");
   });
 });
 
@@ -45,8 +47,12 @@ describe("getAccount", () => {
 });
 
 describe("error handling", () => {
-  it("throws a clean error on a non-2xx response", async () => {
+  it("throws a sanitized error code (not the upstream path) on a non-2xx response", async () => {
     mockFetch({}, false, 429);
-    await expect(getAccount(RAW)).rejects.toThrow(/429/);
+    await expect(getAccount(RAW)).rejects.toThrow(/rate_limited/);
+  });
+  it("maps 5xx to upstream_error", async () => {
+    mockFetch({}, false, 503);
+    await expect(getAccount(RAW)).rejects.toThrow(/upstream_error/);
   });
 });

@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format is based on
 
 ## [0.1.0] - 2026-06-28
 
+### Security & hardening (pre-release)
+- HTTP surface binds `127.0.0.1` by default (localhost-only); pass an explicit host to expose.
+- Request body capped at 64 KiB (413), request/headers timeouts set.
+- Strict input schemas: address CRC + tag/workchain checks, fiat-code and DNS regexes, bounded lengths.
+- Sanitized upstream errors — clients get stable codes (`rate_limited`/`upstream_error`/`timeout`/`not_found`), details logged server-side only.
+- `resolveDns` distinguishes NXDOMAIN from transport errors; jetton fields renamed `priceFiat`/`valueFiat`.
+
 ### Added
 - Read-only TON / GRAM MCP server (stdio) and HTTP/OpenAPI surface from one core.
 - Tools: `ton_get_account`, `ton_get_jettons`, `ton_get_transactions`, `ton_get_rate`,

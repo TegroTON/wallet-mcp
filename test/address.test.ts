@@ -69,4 +69,17 @@ describe("parseAddress — friendly (CRC)", () => {
     const r = parseAddress(bad);
     expect(r.valid).toBe(false);
   });
+  it("rejects a CRC-valid address with an invalid tag", () => {
+    const r = parseAddress(buildFriendly(0x22, 0, hash)); // 0x22 is not a valid TON tag
+    expect(r.valid).toBe(false);
+    expect(r.reason).toBe("invalid address tag");
+  });
+  it("rejects an unsupported workchain byte", () => {
+    const r = parseAddress(buildFriendly(0x11, 5, hash)); // wc byte 0x05 ∉ {0x00, 0xff}
+    expect(r.valid).toBe(false);
+  });
+  it("never throws on non-string input", () => {
+    expect(parseAddress(undefined as unknown).valid).toBe(false);
+    expect(parseAddress({} as unknown).valid).toBe(false);
+  });
 });

@@ -10,17 +10,34 @@ function headers(): Record<string, string> {
   return KEY ? { Authorization: `Bearer ${KEY}` } : {};
 }
 
-/** Fetch JSON from TonAPI with a timeout; throws a clean error on failure. */
+/** Stable, client-safe upstream error — details (path, user input) are logged, never surfaced. */
+export class TonApiError extends Error {
+  constructor(
+    public readonly code: "rate_limited" | "not_found" | "upstream_error" | "timeout" | "network_error",
+    public readonly status: number | null,
+  ) {
+    super(code);
+    this.name = "TonApiError";
+  }
+}
+
+/** Fetch JSON from TonAPI with a timeout. Throws a sanitized TonApiError; logs detail to stderr. */
 async function tapi<T>(path: string): Promise<T> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
     const res = await fetch(`${BASE}${path}`, { headers: headers(), signal: ctrl.signal });
-    if (!res.ok) throw new Error(`TonAPI ${res.status} for ${path}`);
+    if (!res.ok) {
+      console.error(`[tegro-mcp] TonAPI ${res.status} ${path}`);
+      const code = res.status === 429 ? "rate_limited" : res.status === 404 ? "not_found" : "upstream_error";
+      throw new TonApiError(code, res.status);
+    }
     return (await res.json()) as T;
   } catch (e) {
-    if (e instanceof Error && e.name === "AbortError") throw new Error(`TonAPI timeout for ${path}`);
-    throw e;
+    if (e instanceof TonApiError) throw e;
+    if (e instanceof Error && e.name === "AbortError") throw new TonApiError("timeout", null);
+    console.error(`[tegro-mcp] TonAPI request failed ${path}:`, (e as Error)?.message);
+    throw new TonApiError("network_error", null);
   } finally {
     clearTimeout(timer);
   }
@@ -28,13 +45,17 @@ async function tapi<T>(path: string): Promise<T> {
 
 const NANO = 1_000_000_000n;
 
-/** nanotons (string|number|bigint) → GRAM decimal string, exact (no float). */
+/** nanotons (string|number|bigint) → GRAM decimal string, exact BigInt math (no float). */
 export function toGram(nano: string | number | bigint, dp = 4): string {
+  // Note: a JS `number` from JSON.parse is already IEEE-754; for amounts > 2^53 nanotons
+  // (~9M GRAM) prefer passing the raw string. BigInt math below is exact for the input it gets.
   const n = BigInt(typeof nano === "number" ? Math.trunc(nano) : nano);
   const neg = n < 0n;
   const a = neg ? -n : n;
+  const whole = a / NANO;
+  if (dp <= 0) return `${neg ? "-" : ""}${whole}`;
   const frac = (a % NANO).toString().padStart(9, "0").slice(0, dp);
-  return `${neg ? "-" : ""}${a / NANO}.${frac}`;
+  return `${neg ? "-" : ""}${whole}.${frac}`;
 }
 
 export type Account = {
@@ -72,8 +93,10 @@ export type Jetton = {
   balance: string;
   decimals: number;
   master: string;
-  priceUsd: number | null;
-  valueUsd: number | null;
+  /** unit price in the requested fiat currency */
+  priceFiat: number | null;
+  /** holding value in the requested fiat currency */
+  valueFiat: number | null;
   verified: boolean;
 };
 
@@ -93,8 +116,8 @@ export async function getJettons(address: string, currency = "usd"): Promise<Jet
         balance: amount.toLocaleString("en-US", { maximumFractionDigits: 4 }),
         decimals: dec,
         master: b.jetton?.address ?? "",
-        priceUsd: price,
-        valueUsd: price ? amount * price : null,
+        priceFiat: price,
+        valueFiat: price ? amount * price : null,
         verified: b.jetton?.verification === "whitelist",
       };
     })
@@ -191,7 +214,8 @@ export async function resolveDns(name: string): Promise<{ name: string; address:
   try {
     const r = await tapi<{ wallet?: { address?: string } }>(`/dns/${encodeURIComponent(dns)}/resolve`);
     return { name: dns, address: r.wallet?.address ?? null };
-  } catch {
-    return { name: dns, address: null };
+  } catch (e) {
+    if (e instanceof TonApiError && e.code === "not_found") return { name: dns, address: null };
+    throw e; // surface timeouts / upstream errors instead of masking them as "no address"
   }
 }

@@ -2,7 +2,6 @@
 
 [![npm](https://img.shields.io/npm/v/@tegroton/wallet-mcp?color=cb3837&logo=npm)](https://www.npmjs.com/package/@tegroton/wallet-mcp)
 [![npm downloads](https://img.shields.io/npm/dm/@tegroton/wallet-mcp?color=cb3837)](https://www.npmjs.com/package/@tegroton/wallet-mcp)
-[![CI](https://github.com/TegroTON/wallet-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/TegroTON/wallet-mcp/actions/workflows/ci.yml)
 [![MCP server](https://img.shields.io/badge/MCP-server-2563eb)](https://modelcontextprotocol.io)
 [![Built on TON](https://img.shields.io/badge/Built%20on-TON-0098EA?logo=ton&logoColor=white)](https://ton.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ad29f)](LICENSE)

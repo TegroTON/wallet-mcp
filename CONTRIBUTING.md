@@ -27,3 +27,11 @@ npm run typecheck && npm test && npm run build
 1. Add the data function to `src/tonapi.ts` (or `src/address.ts` for offline helpers).
 2. Register it in `src/tools.ts` with a Zod schema and a clear description.
 3. Add a test. Update the README tool table and `CHANGELOG.md`.
+
+## Enabling CI (optional)
+
+The CI workflow lives at `.github/ci.yml` (kept out of `.github/workflows/` so pushing it needs
+no `workflow` token scope). To turn it on, copy it to `.github/workflows/ci.yml` via the GitHub
+web UI (**Actions → New workflow → set up a workflow yourself → paste**), or push it with a token
+that has the `workflow` scope (`gh auth refresh -s workflow`). It runs typecheck + tests + build
+on Node 18/20/22.

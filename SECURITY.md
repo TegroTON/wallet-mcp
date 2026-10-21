@@ -7,8 +7,7 @@ transactions, and cannot move funds. It only reads public on-chain data via TonA
 
 Please report security issues **privately**, not via public issues:
 
-- Email: **security@tegro.finance**
-- Or open a [GitHub security advisory](https://github.com/TegroTON/wallet-mcp/security/advisories/new).
+- Open a [GitHub security advisory](https://github.com/TegroTON/wallet-mcp/security/advisories/new).
 
 We aim to acknowledge within 72 hours. Please include reproduction steps and the affected version.
 

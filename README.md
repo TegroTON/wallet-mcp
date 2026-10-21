@@ -120,7 +120,7 @@ const rate = await getRate("ton", "usd"); // { token: "GRAM", price, diff24h }
 ## Contributing & support
 
 - [Contributing guide](CONTRIBUTING.md) — setup, tests, adding a tool
-- [Security policy](SECURITY.md) — report privately to `security@tegro.finance`
+- [Security policy](SECURITY.md) — report privately via a GitHub security advisory
 - [Changelog](CHANGELOG.md) · [Code of conduct](CODE_OF_CONDUCT.md)
 - Issues and feature requests: [GitHub issues](https://github.com/TegroTON/wallet-mcp/issues)
 
